@@ -129,8 +129,8 @@ simplified version of the design described above. It uses a
 to hold player state in a server-authoritative manner. The client can send "purchase" objects to the
 backend
 [at /purchase/validatePurchase](./api/purchase_controller.js) to
-[validate the reciept](./service/purchase_validator) and
-[transact the product](./service/purchase_transactor). A purchase
+[validate the reciept](./service/purchase_validator.js) and
+[transact the product](./service/purchase_transactor.js). A purchase
 object is a json blob with the following fields:
 ```javascript
 {
