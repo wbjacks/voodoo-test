@@ -3,28 +3,38 @@ var PurchaseTransactor = require('./purchase_transactor.js');
 
 const request = require('request')
 
-class PurchaseValidator {
-    validatePurchase(user_id, purchase) {
-        var user = UserProvider.getUserForId(user_id);
+module.exports.validatePurchase = function(user_id, purchase) {
+    var user = UserProvider.getUserForID(user_id);
 
-        if (purchase.type == 'ios' && !isAppleReceiptValid(purchase)) {
+    if (purchase.type == 'ios') {
+        if (!isAppleReceiptValid(purchase)) {
             user.invalid_purchases.push(purchase);
-            throw `IOS reciept is invalid`
-        } else if (purchase.type == 'android' && !isGoogleReceiptValid(purchase)) {
+            var e = new Error('IOS reciept is invalid');
+            e.status = 400;
+            throw e;
+        }
+    } else if (purchase.type == 'android') {
+        if (!isGoogleReceiptValid(purchase)) {
             user.invalid_purchases.push(purchase);
-            throw `Google receipt is invalid`
-        } 
-
-        PurchaseTransactor.transact(user, purchase);
+            var e = new Error('Google receipt is invalid');
+            e.status = 400;
+            throw e;
+        }
+    } else {
+        var e = new Error(`Receipt type ${purchase.type} is not supported.`);
+        e.status = 400;
+        throw e;
     }
 
-    isAppleReceiptValid(purchase) {
-        return true; // Normally, this would make a call to Apple's IAP backend
-    }
+    PurchaseTransactor.transact(user, purchase);
 
-    isGoogleReceiptValid(purchase) {
-        return true; // Normally, this would make a call to Google's IAP backend
-    }
-};
+    return user;
+}
 
-module.exports = PurchaseValidator;
+function isAppleReceiptValid(purchase) {
+    return true; // Normally, this would make a call to Apple's IAP backend
+}
+
+function isGoogleReceiptValid(purchase) {
+    return true; // Normally, this would make a call to Google's IAP backend
+}

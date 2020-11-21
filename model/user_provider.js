@@ -35,12 +35,11 @@ const reallyComplicatedDatabase = {
     }
 }
 
-class UserProvider {
-    getUserForID(id) {
-        var user = reallyComplicatedDatabase[id];
-        if (user) return user;
-        throw `User not found for id ${id}`
-    }
-}
+module.exports.getUserForID = function(id) {
+    var user = reallyComplicatedDatabase[id];
+    if (user) return user;
 
-module.exports = UserProvider;
+    var e = new Error( `User not found for id ${id}`);
+    e.status = 400;
+    throw e;
+}
