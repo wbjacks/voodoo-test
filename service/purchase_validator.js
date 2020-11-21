@@ -28,6 +28,7 @@ module.exports.validatePurchase = function(user_id, purchase) {
 
     PurchaseTransactor.transact(user, purchase);
 
+    UserProvider.saveUser(user);
     return user;
 }
 

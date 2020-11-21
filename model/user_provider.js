@@ -1,6 +1,7 @@
 
 const reallyComplicatedDatabase = {
     "1234abc": { 
+        "id": "1234abc",
         "playerLevel": 1,
         "selectedHero": "7057ef0d-716d-4c0b-a09c-0ee1286d908f",
         "talentUpgradeCount": 1,
@@ -42,4 +43,8 @@ module.exports.getUserForID = function(id) {
     var e = new Error( `User not found for id ${id}`);
     e.status = 400;
     throw e;
+}
+
+module.exports.saveUser = function(user) {
+    reallyComplicatedDatabase[user.id] = user;
 }

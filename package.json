@@ -17,6 +17,10 @@
     "url": "https://github.com/wbjacks/voodoo-test/issues"
   },
   "homepage": "https://github.com/wbjacks/voodoo-test#readme",
+  "engines": {
+      "node": "^15.2.1",
+      "npm": "^6.14.8"
+  },
   "dependencies": {
     "express": "^4.17.1"
   },
