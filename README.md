@@ -124,9 +124,13 @@ synchronize the json with the game’s one.
 ### Answer
 
 My code exists in this repo. To run, see instructions at the top. The code implements a highly
-simplified version of the design described above. It uses a simple, in-memory datastore to hold
-player state in a server-authoritative manner. The client can send "purchase" objects to the
-backend at /purchase/validatePurchase to validate the reciept and transact the product. A purchase
+simplified version of the design described above. It uses a
+[simple, in-memory blobstore](https://github.com/wbjacks/voodoo-test/blob/672a23570b8c136b0d7473362a964da86256ead3/model/user_provider.js#L2-L37)
+to hold player state in a server-authoritative manner. The client can send "purchase" objects to the
+backend
+[at /purchase/validatePurchase](./api/purchase_controller.js) to
+[validate the reciept](./service/purchase_validator) and
+[transact the product](./service/purchase_transactor). A purchase
 object is a json blob with the following fields:
 ```javascript
 {
@@ -136,8 +140,9 @@ object is a json blob with the following fields:
 }
 ```
 
-The purchase, once validated, is then mapped to a corresponding in-game product, which is then
+The purchase, once validated, is then [mapped to a corresponding in-game
+product](./model/game_data_provider.js), which is then
 transacted in the player's data. The player's data is returned in the response to keep the client's
 local copy up-to-date with what's in the backend.
 
-See test/purchases.js for request examples.
+See [tests](./test/purchases.js) for request examples.
